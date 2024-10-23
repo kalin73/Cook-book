@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cook-book</title>
+    <link rel="stylesheet" type="text/css" href="./static/index.css"/>
+    <script type="module" src="./src/app.js"></script>
+</head>
+
+<body>
+<nav class="navigation" id="navigation">
+    <li class="user">
+        <p id="userMsg">Welcome, <span>Name.</span></p>
+    </li>
+    <li class="user"><a id="logoutLink" href="/logout">Logout</a></li>
+    <li class="user"><a id="createLink" href="/create">Create</a></li>
+    <li><a id="homeLink" href="/home">Home</a></li>
+    <li><a id="searchLink" href="/search">Search</a></li>
+    <li class="right guest"><a id="loginLink" href="/login">Login</a></li>
+    <li class="right guest"><a id="registerLink" href="/register">Register</a></li>
+</nav>
+<main>
+    <section class="receptions" id="homeView">
+        <ul class="cards">
+        </ul>
+    </section>
+
+    <section class="login" id="loginView">
+        <h2>Login</h2>
+        <form class="loginForm" id="loginForm">
+            <input type="email" id="loginEmail" placeholder="Email"/>
+            <input type="password" id="loginPassword" placeholder="Password"/>
+            <input type="checkbox" id="loginCheck"/>Remember me
+            <p class="right">Forgot <a href="">password</a> ?</p>
+            <input type="submit" id="loginBtn" value="Login"/>
+            <p>You don't have and Account ? <a id="registerBtn" href="/register">Register</a></p>
+        </form>
+    </section>
+
+    <section class="register" id="registerView">
+        <h2>Register</h2>
+        <form class="registerForm" id="registerForm">
+            <input type="email" id="registerEmail" placeholder="Email"/>
+            <input type="text" id="firstName" placeholder="First Name"/>
+            <input type="text" id="lastName" placeholder="Last Name"/>
+            <input type="password" id="registerPassword" placeholder="Password"/>
+            <input type="checkbox" id="registerCheck"/>I agree to the terms
+            <input type="submit" id="registerBtn" value="Register"/>
+            <p>You have an Account ? <a id="loginBtn" href="/login">Login</a></p>
+        </form>
+    </section>
+
+    <section class="create" id="createView">
+        <h2>Create recipe</h2>
+        <form class="createForm" id="createForm">
+            <label>Image URL</label>
+            <input type="url" id="imgURL"/>
+            <label>Recipe Title</label>
+            <input type="text" id="createTitle"/>
+            <label>Products -> <b>one per line</b> / Example: <b>Eggs-2br</b></label>
+            <textarea type="text" id="createProduction"></textarea>
+            <label>Method of preparation:</label>
+            <textarea type="text" id="createDescription"></textarea>
+            <input type="submit" id="createBtn" value="Create"/>
+        </form>
+    </section>
+
+    <section class="details" id="details"></section>
+
+    <section class="edit" id="editView">
+        <h2>Edit recipe</h2>
+        <form class="editForm" id="editForm">
+            <label>Image URL</label>
+            <input type="url" id="editImgURL"/>
+            <label>Recipe Title</label>
+            <input type="text" id="editTitle"/>
+            <label>Products -> <b>one per line</b> / Example: <b>Eggs-2br</b></label>
+            <textarea type="text" id="editProduction"></textarea>
+            <label>Method of preparation:</label>
+            <textarea type="text" id="editDescription"></textarea>
+            <input type="submit" id="editeBtn" value="Update"/>
+        </form>
+    </section>
+
+    <section class="search" id="search">
+        <h2>Search</h2>
+        <form class="search-form">
+            <input type="text" name="search" id="search-input"/>
+            <button class="button-list">Search</button>
+        </form>
+        <h4>Result:</h4>
+        <div class="search-result">
+            <p class="no-result">No result.</p>
+            <ul>
+                <!--            <div class="card">-->
+                <!--                <div class="card_image">-->
+                <!--                    <img src="${el.imageUrl}" alt=""/>-->
+                <!--                </div>-->
+                <!--                <div class="card_content">-->
+                <!--                    <h2 class="card_title">${el.title}</h2>-->
+                <!--                    <center><a class="details-btn" href="details" data-id="${el.id}">Show More</a></center>-->
+                <!--                </div>-->
+                <!--            </div>-->
+            </ul>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>@Favorite recipe for you</p>
+</footer>
+</body>
+
+</html>
