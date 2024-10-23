@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginForm {
+    @Size(min = 5, max = 30)
     private String email;
 
     @Size(min = 3)
