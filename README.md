@@ -20,32 +20,32 @@ A website providing the necessary information for every avid foodie. On this sit
 ## Screenshots
 
 Home Page as guest
-![HomePage](https://github.com/Strahil731/CookBook/blob/main/Screenshot/Screenshot%202024-04-04%20222822.png?raw=true)
+![HomePage](https://github.com/kalin73/Cook-book/blob/master/Screenshot/Screenshot%202024-04-04%20222822.png?raw=true)
 
 Login Page
-![LoginPage](https://github.com/Strahil731/CookBook/blob/main/Screenshot/Screenshot%202024-04-04%20222944.png?raw=true)
+![LoginPage](https://github.com/kalin73/Cook-book/blob/master/Screenshot/Screenshot%202024-04-04%20222944.png?raw=true)
 
 Register Page
-![RegisterPage](https://github.com/Strahil731/CookBook/blob/main/Screenshot/Screenshot_1.png?raw=true)
+![RegisterPage](https://github.com/kalin73/Cook-book/blob/master/Screenshot/Screenshot_1.png?raw=true)
 
 Home Page as logged-In user
-![HomePage](https://github.com/Strahil731/CookBook/blob/main/Screenshot/Screenshot%202024-04-04%20223010.png?raw=true)
+![HomePage](https://github.com/kalin73/Cook-book/blob/master/Screenshot/Screenshot%202024-04-04%20223010.png?raw=true)
 
 Create Page
-![CreatePage](https://github.com/Strahil731/CookBook/blob/main/Screenshot/Screenshot%202024-04-04%20223027.png?raw=true)
+![CreatePage](https://github.com/kalin73/Cook-book/blob/master/Screenshot/Screenshot%202024-04-04%20223027.png?raw=true)
 
 Details Page
-![DetailsPage](https://github.com/Strahil731/CookBook/blob/main/Screenshot/Screenshot%202024-04-04%20223041.png?raw=true)
+![DetailsPage](https://github.com/kalin73/Cook-book/blob/master/Screenshot/Screenshot%202024-04-04%20223041.png?raw=true)
 
 Edit Page
-![EditPage](https://github.com/Strahil731/CookBook/blob/main/Screenshot/Screenshot%202024-04-04%20223050.png?raw=true)
+![EditPage](https://github.com/kalin73/Cook-book/blob/master/Screenshot/Screenshot%202024-04-04%20223050.png?raw=true)
 
 Delete promt
 
-![DeletePromt](https://github.com/Strahil731/CookBook/blob/main/Screenshot/Screenshot%202024-04-04%20223105.png?raw=true)
+![DeletePromt](https://github.com/kalin73/Cook-book/blob/master/Screenshot/Screenshot%202024-04-04%20223105.png?raw=true)
 
 Search Page 
-![SearchPage](https://github.com/Strahil731/CookBook/blob/main/Screenshot/Screenshot%202024-04-04%20223117.png?raw=true)
+![SearchPage](https://github.com/kalin73/Cook-book/blob/master/Screenshot/Screenshot%202024-04-04%20223117.png?raw=true)
 
 Details Page
-![DetailsPage](https://github.com/Strahil731/CookBook/blob/main/Screenshot/Screenshot%202024-04-04%20223126.png?raw=true)
+![DetailsPage](https://github.com/kalin73/Cook-book/blob/master/Screenshot/Screenshot%202024-04-04%20223126.png?raw=true)
