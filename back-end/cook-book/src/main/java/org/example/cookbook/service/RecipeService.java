@@ -27,7 +27,6 @@ public class RecipeService {
     private final ModelMapper modelMapper;
     private final IngredientRepository ingredientRepository;
 
-
     @Cacheable(cacheNames = "recipes")
     public List<RecipeDto> getAllRecipes() {
         return this.recipeRepository.findAll()
