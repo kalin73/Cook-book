@@ -1,18 +1,11 @@
-import {getUserToken} from "../helper/userHelper.js";
-
 async function requester(method, url, data) {
     const option = {
         method
     };
 
-    const userData = getUserToken();
     const headers = {
         "Content-Type": "application/json"
     };
-
-    if (userData) {
-        headers["X-Authorization"] = userData.accessToken;
-    }
 
     option[headers] = headers;
 
