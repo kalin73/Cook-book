@@ -5,6 +5,7 @@ import org.example.cookbook.model.dto.user.LoginResponse;
 import org.example.cookbook.model.dto.user.RegisterForm;
 import org.example.cookbook.model.dto.user.UserDto;
 import org.example.cookbook.model.entity.UserEntity;
+import org.example.cookbook.model.enums.Role;
 import org.example.cookbook.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -80,7 +81,8 @@ public class TestUserService {
                 email,
                 password,
                 null,
-                null)));
+                null,
+                Role.USER)));
         when(passwordEncoder.matches(password, password)).thenReturn(true);
         when(modelMapper.map(new UserEntity(), UserDto.class)).thenReturn(new UserDto(id, firstName, lastName, email));
 
