@@ -18,7 +18,7 @@ async function onLogin(event) {
     const password = document.getElementById("loginPassword").value;
 
     if (!email || !password) {
-        return alert("Wrong email or password!");
+        return alert("Invalid email or password!");
     }
 
     const response = await fetch("http://localhost:8080/api/auth/login", {
@@ -30,10 +30,6 @@ async function onLogin(event) {
     });
     if (response.status === 401) {
         return alert("Invalid email or password!");
-    }
-
-    if (response.status === 400) {
-        return alert("Password length should be at least 3 characters!");
     }
 
     const data = await response.json();

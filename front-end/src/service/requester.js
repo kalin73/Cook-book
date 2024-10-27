@@ -1,8 +1,8 @@
 import {getUserToken} from "../helper/userHelper.js";
 
-async function requester(methods, url, data) {
+async function requester(method, url, data) {
     const option = {
-        methods
+        method
     };
 
     const userData = getUserToken();
