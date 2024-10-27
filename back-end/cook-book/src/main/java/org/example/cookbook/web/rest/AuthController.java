@@ -1,5 +1,6 @@
 package org.example.cookbook.web.rest;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.example.cookbook.model.dto.user.*;
 import org.example.cookbook.service.UserService;
@@ -26,9 +27,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserDto> login(@RequestBody @Validated LoginForm loginForm, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<UserDto> login(@RequestBody @Validated LoginForm loginForm, BindingResult bindingResult, HttpServletResponse servletResponse) {
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
 
         LoginResponse response = this.userService.login(loginForm);
