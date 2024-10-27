@@ -2,6 +2,7 @@ package org.example.cookbook.model.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import org.example.cookbook.model.enums.Role;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,6 +28,10 @@ public class UserEntity extends BaseEntity {
 
     @OneToMany(targetEntity = RecipeEntity.class, mappedBy = "user", fetch = FetchType.EAGER)
     private List<RecipeEntity> recipes;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     public UserEntity() {
         this.createdAt = LocalDateTime.now();
@@ -83,6 +88,15 @@ public class UserEntity extends BaseEntity {
 
     public UserEntity setRecipes(List<RecipeEntity> recipes) {
         this.recipes = recipes;
+        return this;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public UserEntity setRole(Role role) {
+        this.role = role;
         return this;
     }
 }

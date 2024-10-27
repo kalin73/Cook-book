@@ -3,6 +3,7 @@ package org.example.cookbook.service;
 import lombok.RequiredArgsConstructor;
 import org.example.cookbook.model.dto.user.*;
 import org.example.cookbook.model.entity.UserEntity;
+import org.example.cookbook.model.enums.Role;
 import org.example.cookbook.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,8 @@ public class UserService {
                 .setEmail(registerForm.getEmail())
                 .setFirstName(registerForm.getFirstName())
                 .setLastName(registerForm.getLastName())
-                .setPassword(passwordEncoder.encode(registerForm.getPassword()));
+                .setPassword(passwordEncoder.encode(registerForm.getPassword()))
+                .setRole(Role.USER);
 
         UserDto dto = modelMapper.map(this.userRepository.save(user), UserDto.class);
 
