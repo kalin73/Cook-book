@@ -93,7 +93,7 @@ public class TestUserService {
                 null,
                 Role.USER)));
         
-        when(modelMapper.map(new UserEntity(), UserDto.class)).thenReturn(new UserDto(id, firstName, lastName, email));
+        when(modelMapper.map(new UserEntity(), UserDto.class)).thenReturn(new UserDto(id, firstName, lastName, email,"USER"));
         when(authenticationProvider.authenticate(any())).thenReturn(null);
         when(jwtService.generateToken(any(), any())).thenReturn(jwtToken);
 
