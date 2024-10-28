@@ -29,6 +29,7 @@ const routes = {
     "/search": showSearch,
     "/logout": async () => {
         await sessionStorage.removeItem("userData");
+        await sessionStorage.removeItem("jwtToken");
         updateNav();
         showHome(context);
     },

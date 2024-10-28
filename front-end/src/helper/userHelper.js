@@ -1,14 +1,18 @@
-function setUser(user) {
+function setUserData(user, jwtToken) {
     sessionStorage.setItem("userData", JSON.stringify(user));
+    sessionStorage.setItem("jwtToken", JSON.stringify(jwtToken));
 }
 
 function getUser() {
     return JSON.parse(sessionStorage.getItem("userData"));
 }
 
-function getUserToken(){
-    const userData = getUser();
-    return userData?.accessToken;
+function getJwtToken() {
+    return JSON.parse(sessionStorage.getItem("jwtToken"));
+}
+
+function getUserToken() {
+    return getJwtToken();
 }
 
 function getUserId() {
@@ -16,4 +20,4 @@ function getUserId() {
     return userData?.id;
 }
 
-export {setUser, getUser, getUserToken, getUserId}
+export {setUserData, getUser, getUserToken, getUserId}

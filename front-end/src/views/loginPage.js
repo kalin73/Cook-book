@@ -1,4 +1,4 @@
-import {setUser} from "../helper/userHelper.js";
+import {setUserData} from "../helper/userHelper.js";
 
 const loginSection = document.getElementById("loginView");
 const loginForm = document.getElementById("loginForm");
@@ -34,7 +34,7 @@ async function onLogin(event) {
 
     const data = await response.json();
 
-    setUser(data);
+    setUserData(data.user, data.jwtToken);
     ctx.updateNav();
     ctx.goTo("/home");
     loginForm.reset();

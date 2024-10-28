@@ -1,4 +1,4 @@
-import {getUser, getUserId} from "../helper/userHelper.js";
+import {getUser, getUserId, getUserToken} from "../helper/userHelper.js";
 
 const detailsSection = document.getElementById("details");
 let ctx = null;
@@ -30,11 +30,21 @@ async function onDelete(event) {
     event.preventDefault();
     const id = event.target.dataset.id;
     const choice = confirm("Are you sure you want delete this recipe?");
+    const token = getUserToken();
 
     if (choice) {
-        await fetch(`http://localhost:8080/api/recipe/${id}`, {
-            method: "DELETE"
+        const response = await fetch(`http://localhost:8080/api/recipe/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
         });
+
+        if (response.status === 403) {
+            alert("Please login again")
+            ctx.goTo("/logout")
+        }
+
         ctx.goTo("/home");
     }
 }

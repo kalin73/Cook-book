@@ -1,4 +1,4 @@
-import {getUserId} from "../helper/userHelper.js";
+import {getUserId, getUserToken} from "../helper/userHelper.js";
 
 const editSection = document.getElementById("editView");
 let ctx = null;
@@ -23,6 +23,7 @@ export async function showEdit(context, data) {
         const ingredients = document.getElementById("editProduction").value;
         const preparation = document.getElementById("editDescription").value;
         const userId = getUserId();
+        const token = getUserToken();
 
         if (!imageUrl || !title || !ingredients || !preparation) {
             return alert("Error input");
@@ -32,10 +33,17 @@ export async function showEdit(context, data) {
         await fetch(`http://localhost:8080/api/recipe/${id}`, {
             method: "PATCH",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
             },
             body: JSON.stringify(item)
         });
+
+        if (response.status === 403) {
+            alert("Please login again")
+            ctx.goTo("/logout")
+        }
+
         ctx.goTo("/details", id);
     });
 }

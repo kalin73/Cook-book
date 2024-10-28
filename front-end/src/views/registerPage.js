@@ -1,4 +1,4 @@
-import {setUser} from "../helper/userHelper.js";
+import {setUserData} from "../helper/userHelper.js";
 
 const registerSection = document.getElementById("registerView");
 const registerForm = document.getElementById("registerForm");
@@ -33,7 +33,7 @@ async function onRegister(event) {
     });
     const data = await response.json();
 
-    setUser(data);
+    setUserData(data.user, data.jwtToken);
     ctx.goTo("/home");
     ctx.updateNav();
     registerForm.reset();
