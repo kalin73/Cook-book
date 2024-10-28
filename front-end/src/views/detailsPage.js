@@ -12,7 +12,7 @@ export async function showDetails(context, data) {
         method: "GET"
     });
     const detailsData = await recipeData.json();
-    const isOwner = getUserId() === detailsData.userId;
+    const isOwner = getUserId() === detailsData.userId || getUser().role === "ADMIN";
 
 
     detailsSection.innerHTML = createDetails(detailsData, isOwner);
