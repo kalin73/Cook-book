@@ -7,10 +7,14 @@ import org.example.cookbook.model.enums.Role;
 import org.example.cookbook.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +22,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
-
+    private final AuthenticationProvider authenticationProvider;
+    private final JwtService jwtService;
 
     public RegisterResponse registerUser(RegisterForm registerForm) {
         if (this.userRepository.findUserByEmail(registerForm.getEmail()).isPresent()) {
@@ -38,12 +43,16 @@ public class UserService {
     }
 
     public LoginResponse login(LoginForm loginForm) {
-        Optional<UserEntity> user = this.userRepository.findUserByEmail(loginForm.getEmail());
+        Authentication authentication = this.authenticationProvider
+                .authenticate(new UsernamePasswordAuthenticationToken(loginForm.getEmail(), loginForm.getPassword()));
 
-        if (user.isPresent() && passwordEncoder.matches(loginForm.getPassword(), user.get().getPassword())) {
-            return new LoginResponse(modelMapper.map(user.get(), UserDto.class), HttpStatus.OK);
-        }
+        final UserEntity user = this.userRepository.findUserByEmail(loginForm.getEmail()).orElseThrow();
 
-        return new LoginResponse(null, HttpStatus.UNAUTHORIZED);
+        final String token = this.jwtService.generateToken(loginForm.getEmail(), Map.of("role", user.getRole().name()));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return new LoginResponse(modelMapper.map(user, UserDto.class), HttpStatus.OK, token);
+
     }
 }
