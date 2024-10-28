@@ -16,12 +16,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -41,9 +43,15 @@ public class TestUserService {
     @Captor
     private ArgumentCaptor<UserEntity> captor;
 
+    @Mock
+    private AuthenticationProvider authenticationProvider;
+
+    @Mock
+    private JwtService jwtService;
+
     @BeforeEach
     public void setUp() {
-        this.userService = new UserService(userRepository, passwordEncoder, modelMapper);
+        this.userService = new UserService(userRepository, passwordEncoder, modelMapper, authenticationProvider, jwtService);
     }
 
     @Test
@@ -75,6 +83,7 @@ public class TestUserService {
         final String email = "ivan@abv.bg";
         final String password = "pass";
         final String id = UUID.randomUUID().toString();
+        final String jwtToken = "token";
 
         LoginForm loginForm = new LoginForm(email, password);
         when(userRepository.findUserByEmail(email)).thenReturn(Optional.of(new UserEntity(firstName, lastName,
@@ -83,12 +92,15 @@ public class TestUserService {
                 null,
                 null,
                 Role.USER)));
-        when(passwordEncoder.matches(password, password)).thenReturn(true);
+        
         when(modelMapper.map(new UserEntity(), UserDto.class)).thenReturn(new UserDto(id, firstName, lastName, email));
+        when(authenticationProvider.authenticate(any())).thenReturn(null);
+        when(jwtService.generateToken(any(), any())).thenReturn(jwtToken);
 
         LoginResponse loginResponse = this.userService.login(loginForm);
 
         assertEquals(loginResponse.status(), HttpStatus.OK);
         assertEquals(email, loginResponse.user().getEmail());
+        assertEquals(jwtToken, loginResponse.jwtToken());
     }
 }
