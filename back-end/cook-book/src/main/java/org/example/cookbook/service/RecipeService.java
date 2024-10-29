@@ -102,10 +102,15 @@ public class RecipeService {
     }
 
     public List<RecipeDto> searchRecipes(String title) {
-        return this.recipeRepository.searchByTitle(title.toLowerCase())
-                .orElse(null)
-                .stream()
-                .map(r -> modelMapper.map(r, RecipeDto.class))
+        List<RecipeEntity> recipeEntities = this.recipeRepository.searchByTitle(title.toLowerCase())
+                .orElse(null);
+
+        if (recipeEntities == null) {
+            return new ArrayList<>();
+        }
+
+        return recipeEntities.stream()
+                .map(recipe -> modelMapper.map(recipe, RecipeDto.class))
                 .toList();
     }
 
