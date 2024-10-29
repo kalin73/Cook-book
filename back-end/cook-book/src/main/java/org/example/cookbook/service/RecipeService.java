@@ -6,6 +6,7 @@ import org.example.cookbook.model.dto.recipe.RecipeDto;
 import org.example.cookbook.model.entity.IngredientEntity;
 import org.example.cookbook.model.entity.RecipeEntity;
 import org.example.cookbook.model.entity.UserEntity;
+import org.example.cookbook.model.user.CustomUserDetails;
 import org.example.cookbook.repository.IngredientRepository;
 import org.example.cookbook.repository.RecipeRepository;
 import org.example.cookbook.repository.UserRepository;
@@ -106,6 +107,12 @@ public class RecipeService {
                 .stream()
                 .map(r -> modelMapper.map(r, RecipeDto.class))
                 .toList();
+    }
+
+    public boolean isOwner(CustomUserDetails owner, UUID recipeId) {
+        RecipeEntity recipe = this.recipeRepository.findById(recipeId).orElseThrow();
+
+        return recipe.getUser().getEmail().equals(owner.getUsername());
     }
 
     @CacheEvict(cacheNames = "recipes", allEntries = true)

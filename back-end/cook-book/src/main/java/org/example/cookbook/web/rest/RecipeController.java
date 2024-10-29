@@ -3,9 +3,12 @@ package org.example.cookbook.web.rest;
 import lombok.RequiredArgsConstructor;
 import org.example.cookbook.model.dto.recipe.RecipeCreateForm;
 import org.example.cookbook.model.dto.recipe.RecipeDto;
+import org.example.cookbook.model.user.CustomUserDetails;
 import org.example.cookbook.service.RecipeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -49,7 +52,10 @@ public class RecipeController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<RecipeDto> updateRecipe(@RequestBody RecipeCreateForm updatedRecipe, @PathVariable(name = "id") UUID id) {
+    @PreAuthorize("hasRole('ADMIN') || @recipeService.isOwner(#owner, #id)")
+    public ResponseEntity<RecipeDto> updateRecipe(@RequestBody RecipeCreateForm updatedRecipe,
+                                                  @PathVariable(name = "id") UUID id,
+                                                  @AuthenticationPrincipal CustomUserDetails owner) {
         RecipeDto recipe = this.recipeService.updateRecipe(updatedRecipe, id);
 
         this.recipeService.refreshRecipes();
@@ -58,7 +64,8 @@ public class RecipeController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<RecipeDto> deleteRecipeById(@PathVariable(name = "id") UUID id) {
+    @PreAuthorize("hasRole('ADMIN') || @recipeService.isOwner(#owner, #id)")
+    public ResponseEntity<RecipeDto> deleteRecipeById(@PathVariable(name = "id") UUID id, @AuthenticationPrincipal CustomUserDetails owner) {
         this.recipeService.deleteRecipeById(id);
 
         this.recipeService.refreshRecipes();
