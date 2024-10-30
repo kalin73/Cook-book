@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -21,7 +22,15 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<UserDto> registerUser(@RequestBody RegisterForm registerForm) {
+    public ResponseEntity<Object> registerUser(@RequestBody RegisterForm registerForm, @Validated BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<ErrorResponse> errors = bindingResult.getFieldErrors()
+                    .stream()
+                    .map(e -> new ErrorResponse(e.getField(), e.getDefaultMessage()))
+                    .toList();
+
+            return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+        }
         RegisterResponse response = this.userService.registerUser(registerForm);
 
         return new ResponseEntity<>(response.user(), response.status());
