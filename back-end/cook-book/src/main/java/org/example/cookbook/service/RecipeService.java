@@ -65,7 +65,7 @@ public class RecipeService {
 
     @Transactional
     public RecipeDto updateRecipe(RecipeCreateForm updatedRecipe, UUID id) {
-        RecipeEntity recipe = this.recipeRepository.findById(id).orElse(null);
+        RecipeEntity recipe = this.recipeRepository.findById(id).orElseThrow(IllegalArgumentException::new);
         recipe.setTitle(updatedRecipe.getTitle())
                 .setPreparation(updatedRecipe.getPreparation())
                 .setImageUrl(updatedRecipe.getImageUrl())
