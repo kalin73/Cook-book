@@ -22,7 +22,7 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<Object> registerUser(@RequestBody RegisterForm registerForm, @Validated BindingResult bindingResult) {
+    public ResponseEntity<Object> registerUser(@RequestBody @Validated RegisterForm registerForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<ErrorResponse> errors = bindingResult.getFieldErrors()
                     .stream()
