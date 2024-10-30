@@ -84,6 +84,7 @@ public class RecipeService {
         return modelMapper.map(recipe, RecipeDto.class);
     }
 
+    @Transactional
     public void deleteRecipeById(UUID id) {
         this.recipeRepository.deleteById(id);
     }
