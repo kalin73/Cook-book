@@ -14,7 +14,7 @@ export function showRegister(context) {
 async function onRegister(event) {
     event.preventDefault();
 
-    const email = document.getElementById("registerEmail").value;
+    const email = document.getElementById("email").value;
     const firstName = document.getElementById("firstName").value;
     const lastName = document.getElementById("lastName").value;
     const password = document.getElementById("registerPassword").value;
@@ -31,6 +31,21 @@ async function onRegister(event) {
         },
         body: JSON.stringify({email, firstName, lastName, password})
     });
+
+    if (response.status === 400) {
+        const data = await response.json();
+        let message = '';
+
+        for (let e of data) {
+            message += `${document.getElementById(e.fieldName).placeholder}: ${e.reason}\n`;
+        }
+
+        alert(message);
+
+    } else if (response.status === 409) {
+        alert("Email already exists!")
+    }
+
     const data = await response.json();
 
     setUserData(data.user, data.jwtToken);
