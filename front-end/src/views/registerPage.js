@@ -17,7 +17,7 @@ async function onRegister(event) {
     const email = document.getElementById("email").value;
     const firstName = document.getElementById("firstName").value;
     const lastName = document.getElementById("lastName").value;
-    const password = document.getElementById("registerPassword").value;
+    const password = document.getElementById("password").value;
     const isCheckedBtn = document.getElementById("registerCheck");
 
     if (!email || !password || !firstName || !lastName || !isCheckedBtn.checked) {
