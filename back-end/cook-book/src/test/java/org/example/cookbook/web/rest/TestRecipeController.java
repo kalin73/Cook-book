@@ -6,6 +6,7 @@ import org.example.cookbook.model.entity.UserEntity;
 import org.example.cookbook.repository.RecipeRepository;
 import org.example.cookbook.repository.UserRepository;
 import org.example.cookbook.service.RecipeService;
+import org.hibernate.validator.internal.constraintvalidators.hv.UUIDValidator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,6 +46,7 @@ public class TestRecipeController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    private UUIDValidator uUIDValidator;
 
     @BeforeEach
     public void setUp() {
@@ -96,6 +99,12 @@ public class TestRecipeController {
                 .andExpect(jsonPath("$.ingredients[0].name", is("cheese")))
                 .andExpect(jsonPath("$.ingredients[0].quantity", is("500gr")))
                 .andExpect(jsonPath("$.userId", is(USER_ID)));
+    }
+
+    @Test
+    public void getRecipeWithWrongId() throws Exception {
+        mockMvc.perform(get("/api/recipe/{id}", UUID.randomUUID()))
+                .andExpect(status().isNotFound());
     }
 
     @Test
