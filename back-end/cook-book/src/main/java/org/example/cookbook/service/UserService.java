@@ -55,4 +55,9 @@ public class UserService {
         return new LoginResponse(modelMapper.map(user, UserDto.class), HttpStatus.OK, token);
 
     }
+
+    public UserEntity getCurrentLoggedInUser() {
+        return this.userRepository.findUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
+                .orElse(null);
+    }
 }
