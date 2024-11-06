@@ -30,4 +30,11 @@ public class LogService {
 
         return null;
     }
+
+    public List<LoginLogDto> getAllLoginLogs() {
+        return loginLogRepository.findAll()
+                .stream()
+                .map(l -> modelMapper.map(l, LoginLogDto.class))
+                .toList();
+    }
 }

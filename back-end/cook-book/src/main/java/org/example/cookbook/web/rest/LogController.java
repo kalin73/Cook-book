@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/log")
 @RequiredArgsConstructor
@@ -24,5 +26,16 @@ public class LogController {
         }
 
         return ResponseEntity.ok(loginLogByUserEmail);
+    }
+
+    @GetMapping("/login/all")
+    public ResponseEntity<List<LoginLogDto>> getAllLoginLogs() {
+        List<LoginLogDto> loginLogs = this.logService.getAllLoginLogs();
+
+        if (loginLogs == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(loginLogs);
     }
 }
