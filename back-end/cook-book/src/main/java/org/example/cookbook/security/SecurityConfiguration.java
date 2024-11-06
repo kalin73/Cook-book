@@ -1,6 +1,7 @@
 package org.example.cookbook.security;
 
 import lombok.RequiredArgsConstructor;
+import org.example.cookbook.model.enums.Role;
 import org.example.cookbook.service.AppUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +29,7 @@ public class SecurityConfiguration {
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(request -> request.requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/recipe/**").permitAll()
+                        .requestMatchers("/api/log/**").hasRole(Role.ADMIN.name())
                         .requestMatchers("/api/recipe/**").authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(FormLoginConfigurer::disable)
