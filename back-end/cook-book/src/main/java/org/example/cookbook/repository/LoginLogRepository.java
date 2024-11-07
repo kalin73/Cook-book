@@ -9,5 +9,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface LoginLogRepository extends JpaRepository<LoginLogEntity, UUID> {
-    Optional<List<LoginLogEntity>> findByUser(UserEntity user);
+    Optional<List<LoginLogEntity>> findByUserEmail(String email);
 }
