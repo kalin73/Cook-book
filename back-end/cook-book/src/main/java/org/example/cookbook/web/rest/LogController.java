@@ -18,7 +18,7 @@ public class LogController {
     public ResponseEntity<LoginLogDto[]> getLoginLogsByUserEmail(@PathVariable String email) {
         LoginLogDto[] loginLogByUserEmail = this.logService.getLoginLogByUserEmail(email);
 
-        if (loginLogByUserEmail == null) {
+        if (loginLogByUserEmail.length == 0) {
             return ResponseEntity.notFound().build();
         }
 
