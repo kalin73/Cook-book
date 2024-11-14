@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.cookbook.model.dto.log.LoginLogDto;
 import org.example.cookbook.service.LogService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,8 +14,8 @@ import java.util.List;
 public class LogController {
     private final LogService logService;
 
-    @GetMapping("/login")
-    public ResponseEntity<LoginLogDto[]> getLoginLogsByUserEmail(@RequestBody String email) {
+    @GetMapping("/login/{email}")
+    public ResponseEntity<LoginLogDto[]> getLoginLogsByUserEmail(@PathVariable String email) {
         LoginLogDto[] loginLogByUserEmail = this.logService.getLoginLogByUserEmail(email);
 
         if (loginLogByUserEmail == null) {
@@ -28,7 +25,7 @@ public class LogController {
         return ResponseEntity.ok(loginLogByUserEmail);
     }
 
-    @GetMapping("/login/all")
+    @GetMapping("/login")
     public ResponseEntity<List<LoginLogDto>> getAllLoginLogs() {
         List<LoginLogDto> loginLogs = this.logService.getAllLoginLogs();
 
