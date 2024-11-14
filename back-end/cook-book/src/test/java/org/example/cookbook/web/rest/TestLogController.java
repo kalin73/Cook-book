@@ -74,4 +74,19 @@ public class TestLogController {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.[0].user.email").value("test@test.com"));
     }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    public void testGetLoginLogWrongEmail() throws Exception {
+        LoginForm loginForm = new LoginForm("test@test.com", "test123");
+        String json = new ObjectMapper().writeValueAsString(loginForm);
+
+        mockMvc.perform(post("/api/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json));
+
+        mockMvc.perform(get("/api/log/login/{email}", "test@test1.com")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
 }
