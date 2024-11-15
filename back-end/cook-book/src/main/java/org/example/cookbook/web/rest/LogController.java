@@ -29,7 +29,7 @@ public class LogController {
     public ResponseEntity<List<LoginLogDto>> getAllLoginLogs() {
         List<LoginLogDto> loginLogs = this.logService.getAllLoginLogs();
 
-        if (loginLogs == null) {
+        if (loginLogs.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
