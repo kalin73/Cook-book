@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -43,8 +44,14 @@ public class UserService {
     }
 
     public LoginResponse login(LoginForm loginForm) {
-        Authentication authentication = this.authenticationProvider
-                .authenticate(new UsernamePasswordAuthenticationToken(loginForm.getEmail(), loginForm.getPassword()));
+        Authentication authentication;
+
+        try {
+            authentication = this.authenticationProvider
+                    .authenticate(new UsernamePasswordAuthenticationToken(loginForm.getEmail(), loginForm.getPassword()));
+        } catch (AuthenticationException e) {
+            return new LoginResponse(null, HttpStatus.UNAUTHORIZED, "");
+        }
 
         final UserEntity user = this.userRepository.findUserByEmail(loginForm.getEmail()).orElseThrow();
 
