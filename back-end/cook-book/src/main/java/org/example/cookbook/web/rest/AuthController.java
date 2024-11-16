@@ -44,6 +44,10 @@ public class AuthController {
 
         LoginResponse response = this.userService.login(loginForm);
 
+        if (response.status() == HttpStatus.UNAUTHORIZED) {
+            return new ResponseEntity<>(null, response.status());
+        }
+
         return new ResponseEntity<>(Map.of("user", response.user(), "jwtToken", response.jwtToken()), response.status());
     }
 }
