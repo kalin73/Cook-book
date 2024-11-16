@@ -13,10 +13,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegisterForm {
-    @Pattern(regexp = "[a-z]{3,30}", message = "should be between 3 and 30 letters!")
+    @Pattern(regexp = "[A-Za-z]{3,30}", message = "should be between 3 and 30 letters!")
     private String firstName;
 
-    @Pattern(regexp = "[a-z]{3,30}", message = "should be between 3 and 30 letters!")
+    @Pattern(regexp = "[A-Za-z]{3,30}", message = "should be between 3 and 30 letters!")
     private String lastName;
 
     @Email
