@@ -1,8 +1,10 @@
 package org.example.cookbook.web.rest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.cookbook.model.dto.user.LoginForm;
 import org.example.cookbook.model.dto.user.RegisterForm;
+import org.example.cookbook.repository.LoginLogRepository;
 import org.example.cookbook.repository.UserRepository;
 import org.example.cookbook.service.UserService;
 import org.junit.jupiter.api.AfterEach;
@@ -40,36 +42,108 @@ public class TestAuthController {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private LoginLogRepository loginLogRepository;
+
     @AfterEach
     public void tearDown() {
+        loginLogRepository.deleteAll();
         userRepository.deleteAll();
+    }
+
+    @Test
+    public void registerUserTest() throws Exception {
+        final String json = mapToJson(registerForm);
+
+        assertEquals(0, userRepository.count());
+
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.firstName", is(firstName)))
+                .andExpect(jsonPath("$.lastName", is(lastName)))
+                .andExpect(jsonPath("$.email", is(email)));
+
+        assertEquals(1, userRepository.count());
+    }
+
+    @Test
+    public void failedRegistrationTest() throws Exception {
+        addUser();
+
+        String json = new ObjectMapper().writeValueAsString(registerForm);
+
+        assertEquals(1, userRepository.count());
+
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isConflict());
+
+        assertEquals(1, userRepository.count());
+    }
+
+    @Test
+    public void testRegisterUserWithWrongInput() throws Exception {
+        RegisterForm wrongUser = new RegisterForm("er", lastName, email, password);
+
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapToJson(wrongUser)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.[0].fieldName", is("firstName")));
+
+        // Fixing field
+        wrongUser.setFirstName(firstName);
+
+        wrongUser.setLastName("er");
+
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapToJson(wrongUser)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.[0].fieldName", is("lastName")));
+
+        // Fixing field
+        wrongUser.setLastName(lastName);
+
+        wrongUser.setPassword("12");
+
+        mockMvc.perform(post("/api/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapToJson(wrongUser)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.[0].fieldName", is("password")));
+
+        assertEquals(0, userRepository.count());
     }
 
     @Test
     public void successfulLoginTest() throws Exception {
         addUser();
 
-        final String requestJson = new ObjectMapper().writeValueAsString(loginForm);
+        final String requestJson = mapToJson(loginForm);
 
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestJson))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email", is(email)));
+                .andExpect(jsonPath("$.user.email", is(email)));
     }
 
     @Test
     public void failedLoginTest() throws Exception {
         addUser();
 
-        String json = new ObjectMapper().writeValueAsString(new LoginForm(email, password + "wrong"));
+        String json = mapToJson(new LoginForm(email, password + "wrong"));
 
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isUnauthorized());
 
-        json = new ObjectMapper().writeValueAsString(new LoginForm("wrong@emal.com", password));
+        json = mapToJson(new LoginForm("wrong@emal.com", password));
 
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -81,49 +155,19 @@ public class TestAuthController {
     public void loginWithInvalidInputTest() throws Exception {
         addUser();
 
-        final String json = new ObjectMapper()
-                .writeValueAsString(new LoginForm("null", password));
+        final String json = mapToJson(new LoginForm("null", password));
 
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    public void registerUserTest() throws Exception {
-        final String json = new ObjectMapper().writeValueAsString(registerForm);
-
-        assertEquals(userRepository.count(), 0);
-
-        mockMvc.perform(post("/api/auth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.firstName", is(firstName)))
-                .andExpect(jsonPath("$.lastName", is(lastName)))
-                .andExpect(jsonPath("$.email", is(email)));
-
-        assertEquals(userRepository.count(), 1);
-    }
-
-    @Test
-    public void failedRegistrationTest() throws Exception {
-        addUser();
-
-        String json = new ObjectMapper().writeValueAsString(registerForm);
-
-        assertEquals(userRepository.count(), 1);
-
-        mockMvc.perform(post("/api/auth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json))
-                .andExpect(status().isConflict());
-
-        assertEquals(userRepository.count(), 1);
+                .andExpect(status().isUnauthorized());
     }
 
     private void addUser() {
         userService.registerUser(registerForm);
+    }
+
+    private String mapToJson(Object obj) throws JsonProcessingException {
+        return new ObjectMapper().writeValueAsString(obj);
     }
 }
