@@ -20,7 +20,12 @@ async function onRegister(event) {
     const password = document.getElementById("password").value;
     const isCheckedBtn = document.getElementById("registerCheck");
 
-    if (!email || !password || !firstName || !lastName || !isCheckedBtn.checked) {
+
+    if (!isCheckedBtn.checked) {
+        return alert("Please check box \"I agree to the terms\"");
+    }
+
+    if (!email || !password || !firstName || !lastName) {
         return alert("Invalid input!");
     }
 
