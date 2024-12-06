@@ -3,12 +3,15 @@ package org.example.cookbook.web.rest;
 import lombok.RequiredArgsConstructor;
 import org.example.cookbook.model.dto.recipe.RecipeCreateForm;
 import org.example.cookbook.model.dto.recipe.RecipeDto;
+import org.example.cookbook.model.dto.user.ErrorResponse;
 import org.example.cookbook.model.user.CustomUserDetails;
 import org.example.cookbook.service.RecipeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -22,7 +25,17 @@ public class RecipeController {
     private final RecipeService recipeService;
 
     @PostMapping
-    public ResponseEntity<RecipeDto> createRecipe(@RequestBody RecipeCreateForm recipeCreateForm) {
+    public ResponseEntity<Object> createRecipe(@RequestBody @Validated RecipeCreateForm recipeCreateForm,
+                                                  BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            List<ErrorResponse> errors = bindingResult.getFieldErrors()
+                    .stream()
+                    .map(e -> new ErrorResponse(e.getField(), e.getDefaultMessage()))
+                    .toList();
+
+            return ResponseEntity.badRequest().body(errors);
+        }
+
         RecipeDto recipe = this.recipeService.createRecipe(recipeCreateForm);
 
         this.recipeService.refreshRecipes();
