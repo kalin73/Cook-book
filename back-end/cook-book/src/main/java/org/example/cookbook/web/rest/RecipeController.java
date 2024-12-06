@@ -26,8 +26,8 @@ public class RecipeController {
 
     @PostMapping
     public ResponseEntity<Object> createRecipe(@RequestBody @Validated RecipeCreateForm recipeCreateForm,
-                                                  BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) {
+                                               BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             List<ErrorResponse> errors = bindingResult.getFieldErrors()
                     .stream()
                     .map(e -> new ErrorResponse(e.getField(), e.getDefaultMessage()))
@@ -66,9 +66,19 @@ public class RecipeController {
 
     @PatchMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN') || @recipeService.isOwner(#owner, #id)")
-    public ResponseEntity<RecipeDto> updateRecipe(@RequestBody RecipeCreateForm updatedRecipe,
-                                                  @PathVariable(name = "id") UUID id,
-                                                  @AuthenticationPrincipal CustomUserDetails owner) {
+    public ResponseEntity<Object> updateRecipe(@RequestBody @Validated RecipeCreateForm updatedRecipe,
+                                               BindingResult bindingResult,
+                                               @PathVariable(name = "id") UUID id,
+                                               @AuthenticationPrincipal CustomUserDetails owner) {
+        if (bindingResult.hasErrors()) {
+            List<ErrorResponse> errors = bindingResult.getFieldErrors()
+                    .stream()
+                    .map(e -> new ErrorResponse(e.getField(), e.getDefaultMessage()))
+                    .toList();
+
+            return ResponseEntity.badRequest().body(errors);
+        }
+
         RecipeDto recipe = this.recipeService.updateRecipe(updatedRecipe, id);
 
         this.recipeService.refreshRecipes();
