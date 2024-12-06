@@ -10,16 +10,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RecipeCreateForm {
-    @Size(min = 1, max = 50, message = "should not be empty or more then 50 symbols")
+    @Size(min = 1, max = 50, message = "Title should not be empty or more then 50 symbols")
     private String title;
 
-    @NotBlank(message = "should not be empty")
+    @NotBlank(message = "Preparation should not be empty")
     private String preparation;
 
-    @NotBlank(message = "should not be empty")
+    @NotBlank(message = "Image url should not be empty")
     private String imageUrl;
 
-    @NotBlank(message = "should not be empty")
+    @NotBlank(message = "Ingredients should not be empty")
     private String ingredients;
 
     private String userId;
