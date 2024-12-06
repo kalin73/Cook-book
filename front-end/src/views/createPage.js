@@ -14,10 +14,10 @@ export function showCreatePage(context) {
 async function onCreate(event) {
     event.preventDefault();
 
-    const imageUrl = document.getElementById("imgURL").value;
-    const title = document.getElementById("createTitle").value;
-    const ingredients = document.getElementById("createProduction").value;
-    const preparation = document.getElementById("createDescription").value;
+    const imageUrl = document.getElementById("imageUrl").value;
+    const title = document.getElementById("title").value;
+    const ingredients = document.getElementById("ingredients").value;
+    const preparation = document.getElementById("preparation").value;
     const userId = getUserId();
 
     if (!imageUrl || !title || !ingredients || !preparation) {
@@ -37,6 +37,17 @@ async function onCreate(event) {
     if (response.status === 403) {
         alert("Please login again")
         ctx.goTo("/logout")
+
+    }else if(response.status === 400){
+       const body = await response.json();
+       let message = "";
+
+       for(let e of body){
+           message += `${document.getElementById(e.fieldName).placeholder}: ${e.reason}`;
+       }
+
+       alert(message);
+
     }
 
     ctx.goTo("/home");
