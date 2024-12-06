@@ -21,7 +21,7 @@ async function onCreate(event) {
     const userId = getUserId();
 
     if (!imageUrl || !title || !ingredients || !preparation) {
-        return alert("Error input");
+        return alert("Invalid input!");
     }
     const token = getUserToken();
 
@@ -38,18 +38,19 @@ async function onCreate(event) {
         alert("Please login again")
         ctx.goTo("/logout")
 
-    }else if(response.status === 400){
-       const body = await response.json();
-       let message = "";
+    } else if (response.status === 400) {
+        const body = await response.json();
+        let message = "";
 
-       for(let e of body){
-           message += `${document.getElementById(e.fieldName).placeholder}: ${e.reason}`;
-       }
+        for (let e of body) {
+            message += `${document.getElementById(e.fieldName).placeholder}: ${e.reason}\n`;
+        }
 
-       alert(message);
+        alert(message);
+
+    } else {
+        ctx.goTo("/home");
+        createForm.reset();
 
     }
-
-    ctx.goTo("/home");
-    createForm.reset();
 }
