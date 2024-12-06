@@ -43,7 +43,7 @@ async function onCreate(event) {
         let message = "";
 
         for (let e of body) {
-            message += `${document.getElementById(e.fieldName).placeholder}: ${e.reason}\n`;
+            message += `${e.reason}\n`;
         }
 
         alert(message);

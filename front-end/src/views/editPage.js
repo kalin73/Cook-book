@@ -18,10 +18,10 @@ export async function showEdit(context, data) {
     submitBtn.addEventListener("click", async (event) => {
         event.preventDefault();
 
-        const imageUrl = document.getElementById("imageUrl").value;
-        const title = document.getElementById("title").value;
-        const ingredients = document.getElementById("ingredients").value;
-        const preparation = document.getElementById("preparation").value;
+        const imageUrl = document.getElementById("editImgURL").value;
+        const title = document.getElementById("editTitle").value;
+        const ingredients = document.getElementById("editProduction").value;
+        const preparation = document.getElementById("editDescription").value;
         const userId = getUserId();
         const token = getUserToken();
 
@@ -30,7 +30,7 @@ export async function showEdit(context, data) {
         }
 
         const item = {userId, title, imageUrl, ingredients, preparation}
-        await fetch(`http://localhost:8080/api/recipe/${id}`, {
+        const updateResponse = await fetch(`http://localhost:8080/api/recipe/${id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -39,12 +39,23 @@ export async function showEdit(context, data) {
             body: JSON.stringify(item)
         });
 
-        if (response.status === 403) {
+        if (updateResponse.status === 403) {
             alert("Please login again")
             ctx.goTo("/logout")
-        }
 
-        ctx.goTo("/details", id);
+        } else if (updateResponse.status === 400) {
+            const body = await updateResponse.json();
+            let message = "";
+
+            for (let e of body) {
+                message += `${e.reason}\n`;
+            }
+
+            alert(message);
+
+        } else {
+            ctx.goTo("/details", id);
+        }
     });
 }
 

@@ -42,7 +42,7 @@ async function onRegister(event) {
         let message = '';
 
         for (let e of data) {
-            message += `${document.getElementById(e.fieldName).placeholder}: ${e.reason}\n`;
+            message += `${e.reason}\n`;
         }
 
         alert(message);
