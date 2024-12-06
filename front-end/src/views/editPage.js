@@ -18,10 +18,10 @@ export async function showEdit(context, data) {
     submitBtn.addEventListener("click", async (event) => {
         event.preventDefault();
 
-        const imageUrl = document.getElementById("editImgURL").value;
-        const title = document.getElementById("editTitle").value;
-        const ingredients = document.getElementById("editProduction").value;
-        const preparation = document.getElementById("editDescription").value;
+        const imageUrl = document.getElementById("imageUrl").value;
+        const title = document.getElementById("title").value;
+        const ingredients = document.getElementById("ingredients").value;
+        const preparation = document.getElementById("preparation").value;
         const userId = getUserId();
         const token = getUserToken();
 
