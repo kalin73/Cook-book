@@ -135,6 +135,26 @@ public class TestRecipeController {
 
     @Test
     @WithUserDetails(value = "user1@example.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void testCreateRecipeWithWrongInput() throws Exception {
+        RecipeCreateForm recipeCreateForm = new RecipeCreateForm();
+        recipeCreateForm.setTitle("");
+        recipeCreateForm.setImageUrl("url1");
+        recipeCreateForm.setPreparation("cook");
+        recipeCreateForm.setIngredients("dough-500gr");
+        recipeCreateForm.setUserId(USER_ID);
+
+        String json = new ObjectMapper().writeValueAsString(recipeCreateForm);
+
+        mockMvc.perform(post("/api/recipe")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.[0].fieldName", is("title")))
+                .andExpect(jsonPath("$.[0].reason", is("Title should not be empty or more then 50 symbols")));
+    }
+
+    @Test
+    @WithUserDetails(value = "user1@example.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     public void testUpdateRecipeWithFromOwner() throws Exception {
         mockMvc.perform(get("/api/recipe/{id}", RECIPE_ID_1)
                         .accept(MediaType.APPLICATION_JSON))
@@ -167,6 +187,25 @@ public class TestRecipeController {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title", is("French fries")))
                 .andExpect(jsonPath("$.ingredients[0].name", is("potatoes")));
+    }
+
+    @Test
+    @WithUserDetails(value = "user1@example.com", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    public void testUpdateRecipeWithWrongInput() throws Exception {
+        RecipeCreateForm recipeCreateForm = new RecipeCreateForm();
+        recipeCreateForm.setTitle("French fries");
+        recipeCreateForm.setImageUrl("url1");
+        recipeCreateForm.setPreparation("fry");
+        recipeCreateForm.setIngredients("");
+
+        String json = new ObjectMapper().writeValueAsString(recipeCreateForm);
+
+        mockMvc.perform(patch("/api/recipe/{id}", RECIPE_ID_1)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.[0].fieldName", is("ingredients")))
+                .andExpect(jsonPath("$.[0].reason", is("Ingredients should not be empty")));
     }
 
     @Test
