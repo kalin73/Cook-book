@@ -92,14 +92,14 @@ public class TestUserService {
                 null,
                 null,
                 Role.USER)));
-        
-        when(modelMapper.map(new UserEntity(), UserDto.class)).thenReturn(new UserDto(id, firstName, lastName, email,"USER"));
+
+        when(modelMapper.map(new UserEntity(), UserDto.class)).thenReturn(new UserDto(id, firstName, lastName, email, "USER"));
         when(authenticationProvider.authenticate(any())).thenReturn(null);
         when(jwtService.generateToken(any(), any())).thenReturn(jwtToken);
 
         LoginResponse loginResponse = this.userService.login(loginForm);
 
-        assertEquals(loginResponse.status(), HttpStatus.OK);
+        assertEquals(HttpStatus.OK, loginResponse.status());
         assertEquals(email, loginResponse.user().getEmail());
         assertEquals(jwtToken, loginResponse.jwtToken());
     }

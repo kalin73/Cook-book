@@ -8,8 +8,6 @@ import org.example.cookbook.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
@@ -30,16 +28,11 @@ public class TestRecipeService {
     @Mock
     private IngredientRepository ingredientRepository;
 
-    @Captor
-    private ArgumentCaptor<RecipeEntity> captor;
-
-    private ModelMapper modelMapper;
-
     private RecipeService recipeService;
 
     @BeforeEach
     public void setUp() {
-        this.modelMapper = new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();
         this.recipeService = new RecipeService(recipeRepository, userRepository, modelMapper, ingredientRepository);
     }
 
