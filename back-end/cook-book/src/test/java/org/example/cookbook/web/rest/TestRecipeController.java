@@ -223,12 +223,12 @@ public class TestRecipeController {
     public void testDeleteRecipeFromOwner() throws Exception {
         createNewRecipe();
 
-        assertEquals(recipeRepository.count(), 2);
+        assertEquals(2, recipeRepository.count());
 
         mockMvc.perform(delete("/api/recipe/{id}", RECIPE_ID_2))
                 .andExpect(status().isNoContent());
 
-        assertEquals(recipeRepository.count(), 1);
+        assertEquals(1, recipeRepository.count());
 
         mockMvc.perform(get("/api/recipe/{id}", RECIPE_ID_2))
                 .andExpect(status().isNotFound());
@@ -239,12 +239,12 @@ public class TestRecipeController {
     public void testDeleteRecipeFromAdmin() throws Exception {
         createNewRecipe();
 
-        assertEquals(recipeRepository.count(), 2);
+        assertEquals(2, recipeRepository.count());
 
         mockMvc.perform(delete("/api/recipe/{id}", RECIPE_ID_2))
                 .andExpect(status().isNoContent());
 
-        assertEquals(recipeRepository.count(), 1);
+        assertEquals(1, recipeRepository.count());
 
         mockMvc.perform(get("/api/recipe/{id}", RECIPE_ID_2))
                 .andExpect(status().isNotFound());
@@ -254,12 +254,12 @@ public class TestRecipeController {
     public void testDeleteRecipeFromWrongUser() throws Exception {
         createNewRecipe();
 
-        assertEquals(recipeRepository.count(), 2);
+        assertEquals(2, recipeRepository.count());
 
         mockMvc.perform(delete("/api/recipe/{id}", RECIPE_ID_2))
                 .andExpect(status().isForbidden());
 
-        assertEquals(recipeRepository.count(), 2);
+        assertEquals(2, recipeRepository.count());
     }
 
     @Test
