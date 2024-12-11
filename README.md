@@ -12,7 +12,7 @@ A website providing the necessary information for every avid foodie. On this sit
 
 **Front-end:** HTML, CSS, JAVASCRIPT
 
-**Back-end:** Java, Spring web
+**Back-end:** Java, Spring Boot (Web, Security, Data JPA)
 
 **Database:** PostgreSQL
 
@@ -31,16 +31,16 @@ Register Page
 Home Page as logged-In user
 ![HomePage](https://github.com/kalin73/Cook-book/blob/master/Screenshot/Screenshot%202024-04-04%20223010.png?raw=true)
 
-Create Page
+Create Recipe Page
 ![CreatePage](https://github.com/kalin73/Cook-book/blob/master/Screenshot/Screenshot%202024-04-04%20223027.png?raw=true)
 
-Details Page
+Details Recipe Page
 ![DetailsPage](https://github.com/kalin73/Cook-book/blob/master/Screenshot/Screenshot%202024-04-04%20223041.png?raw=true)
 
-Edit Page
+Edit Recipe Page
 ![EditPage](https://github.com/kalin73/Cook-book/blob/master/Screenshot/Screenshot%202024-04-04%20223050.png?raw=true)
 
-Delete promt
+Delete prompt
 
 ![DeletePromt](https://github.com/kalin73/Cook-book/blob/master/Screenshot/Screenshot%202024-04-04%20223105.png?raw=true)
 
