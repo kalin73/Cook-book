@@ -36,6 +36,7 @@ public class RecipeService {
                 .toList();
     }
 
+    @Transactional
     public RecipeDto createRecipe(RecipeCreateForm recipeCreateForm) {
         UserEntity user = this.userRepository.findById(UUID.fromString(recipeCreateForm.getUserId()))
                 .orElseThrow(IllegalArgumentException::new);
@@ -46,13 +47,10 @@ public class RecipeService {
                 .setImageUrl(recipeCreateForm.getImageUrl())
                 .setUser(user);
 
-        recipe = this.recipeRepository.save(recipe);
-
         List<IngredientEntity> ingredients = extractIngredients(recipeCreateForm, recipe);
-
-        ingredients = this.ingredientRepository.saveAll(ingredients);
-
         recipe.setIngredients(ingredients);
+
+        recipe = this.recipeRepository.save(recipe);
 
         return modelMapper.map(recipe, RecipeDto.class);
     }
