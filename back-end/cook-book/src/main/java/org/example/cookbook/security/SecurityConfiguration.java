@@ -24,11 +24,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final String[] OPEN_ENDPOINTS = {"/api/auth/**", "/swagger-ui/**", "swagger-ui.html", "/v3/api-docs/**"};
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .authorizeHttpRequests(request -> request.requestMatchers("/api/auth/**").permitAll()
+                .authorizeHttpRequests(request -> request.requestMatchers(OPEN_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/recipe/**").permitAll()
                         .requestMatchers("/api/log/**").hasRole(Role.ADMIN.name())
                         .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
